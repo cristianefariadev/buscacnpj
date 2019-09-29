@@ -2,7 +2,7 @@ import styled, { keyframes, css } from 'styled-components';
 
 export const Title = styled.form`
   margin-top: 50px;
-  font-size: 30px;
+  font-size: 1.3rem;
   color: #3a8970;
   font-weight: normal;
 
@@ -54,7 +54,7 @@ export const SubmitButton = styled.button.attrs(props => ({
   justify-content: center;
   align-items: center;
 
-  &[disable] {
+  &[disabled] {
     cursor: not-allowed;
     opacity: 0.6;
   }

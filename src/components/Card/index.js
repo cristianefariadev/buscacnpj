@@ -12,6 +12,10 @@ const Card = styled.div`
   flex-direction: column;
   justify-content: baseline;
 
+  li {
+    list-style: none;
+  }
+
   h2 {
     font-size: 20px;
     svg {
@@ -20,6 +24,9 @@ const Card = styled.div`
   }
   p {
     margin: 6px 0 16px;
+  }
+  span {
+    margin: 0 4px;
   }
 `;
 

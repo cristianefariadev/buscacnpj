@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 
 import { FaBuilding, FaSearch, FaSpinner } from 'react-icons/fa';
-// import Card from '../../components/Card';
+import Card from '../../components/Card';
 
 import api from '../../services/api';
-import { Title, Form, SubmitButton } from './styles';
+import { Title, Form, SubmitButton, BgGradient, Container } from './styles';
 
 export default class Main extends Component {
   state = {
@@ -12,6 +12,22 @@ export default class Main extends Component {
     company: [],
     loading: false
   };
+
+  componentDidMount() {
+    const company = localStorage.getItem('company');
+
+    if (company) {
+      this.setState({ company: JSON.parse(company) });
+    }
+  }
+
+  componentDidUpdate(_, prevState) {
+    const { company } = this.state;
+
+    if (prevState.company !== company) {
+      localStorage.setItem('company', JSON.stringify(company));
+    }
+  }
 
   handleInputChange = e => {
     this.setState({ newCnpj: e.target.value });
@@ -46,7 +62,7 @@ export default class Main extends Component {
   };
 
   render() {
-    const { newCnpj, loading } = this.state;
+    const { newCnpj, company, loading } = this.state;
 
     return (
       <>
@@ -71,6 +87,39 @@ export default class Main extends Component {
             </SubmitButton>
           </Form>
         </header>
+        <section>
+          <BgGradient>
+            <Container>
+              {company.map(comp => (
+                <Card>
+                  <li key={comp.cnpj}>
+                    <div>
+                      <strong>CNPJ</strong>
+                      <p>{comp.cnpj}</p>
+                    </div>
+                    <div>
+                      <strong>Razão Social</strong>
+                      <p>{comp.nome}</p>
+                    </div>
+                    <div>
+                      <strong>Endereço</strong>
+                      <p>
+                        {comp.logradouro}
+                        <span>{comp.numero}</span>
+                        <span>{comp.complemento}</span>
+                        <span>Bairro: {comp.bairro}</span>
+                        <span>CEP: {comp.cep}</span>
+                        <span>{comp.municipio}</span>
+                        <span> {comp.uf}</span>
+                      </p>
+                      <i>Ver no mapa</i>
+                    </div>
+                  </li>
+                </Card>
+              ))}
+            </Container>
+          </BgGradient>
+        </section>
       </>
     );
   }
