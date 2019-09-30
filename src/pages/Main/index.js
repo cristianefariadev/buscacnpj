@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import { FaBuilding, FaSearch, FaSpinner } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 import Card from '../../components/Card';
 
 import api from '../../services/api';
@@ -51,8 +52,15 @@ export default class Main extends Component {
       bairro: response.data.bairro,
       cep: response.data.cep,
       municipio: response.data.municipio,
-      uf: response.data.uf
+      uf: response.data.uf,
+      status: response.data.status
     };
+
+    const { status } = response.data.status;
+
+    if (!status) {
+      console.log('erro');
+    }
 
     this.setState({
       company: [...company, data],
@@ -75,6 +83,7 @@ export default class Main extends Component {
             <input
               type="text"
               placeholder="CNPJ..."
+              required
               value={newCnpj}
               onChange={this.handleInputChange}
             />
@@ -104,15 +113,15 @@ export default class Main extends Component {
                     <div>
                       <strong>Endereço</strong>
                       <p>
-                        {comp.logradouro}
-                        <span>{comp.numero}</span>
-                        <span>{comp.complemento}</span>
-                        <span>Bairro: {comp.bairro}</span>
-                        <span>CEP: {comp.cep}</span>
-                        <span>{comp.municipio}</span>
-                        <span> {comp.uf}</span>
+                        <span>{comp.logradouro},</span>
+                        <span> {comp.numero} -</span>
+                        <span> {comp.complemento} -</span>
+                        <span> {comp.bairro},</span>
+                        <span> {comp.municipio} -</span>
+                        <span> {comp.uf},</span>
+                        <span> {comp.cep}</span>
                       </p>
-                      <i>Ver no mapa</i>
+                      <Link to="/displaymap">Ver no mapa</Link>
                     </div>
                   </li>
                 </Card>

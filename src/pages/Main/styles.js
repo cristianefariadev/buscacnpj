@@ -69,16 +69,16 @@ export const SubmitButton = styled.button.attrs(props => ({
 
 export const BgGradient = styled.form`
   margin-top: 60px;
-  height: 70vh;
+  min-height: 300px;
   padding: 60px 0;
   background: #3a8970;
 `;
 
 export const Container = styled.form`
   max-width: 1200px;
+
   margin: 0 auto;
   display: flex;
   flex-flow: row wrap;
-  justify-content: space-between;
   align-items: flex-start;
 `;

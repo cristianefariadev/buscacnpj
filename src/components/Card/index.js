@@ -25,9 +25,6 @@ const Card = styled.div`
   p {
     margin: 6px 0 16px;
   }
-  span {
-    margin: 0 4px;
-  }
 `;
 
 export default Card;
