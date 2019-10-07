@@ -21,14 +21,22 @@ export const Form = styled.form`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  position: relative;
   input {
     flex: 1;
+    max-width: 300px;
     border: 1px solid #eee;
     padding: 10px 15px;
     border-radius: 4px;
     font-size: 16px;
-    max-width: 300px;
   }
+`;
+export const MessageError = styled.form`
+  position: absolute;
+  left: 50%;
+  bottom: -20px;
+  font-size: 10px;
+  color: red;
 `;
 const rotate = keyframes`
   from {

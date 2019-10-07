@@ -5,7 +5,14 @@ import { Link } from 'react-router-dom';
 import Card from '../../components/Card';
 
 import api from '../../services/api';
-import { Title, Form, SubmitButton, BgGradient, Container } from './styles';
+import {
+  Title,
+  Form,
+  MessageError,
+  SubmitButton,
+  BgGradient,
+  Container
+} from './styles';
 
 export default class Main extends Component {
   state = {
@@ -82,11 +89,13 @@ export default class Main extends Component {
           <Form onSubmit={this.handleSubmit}>
             <input
               type="text"
+              maxLength="14"
               placeholder="CNPJ..."
               required
               value={newCnpj}
               onChange={this.handleInputChange}
             />
+            <MessageError>CNPJ Inválido!</MessageError>
             <SubmitButton loading={loading ? 1 : 0}>
               {loading ? (
                 <FaSpinner color="FFF" size={14} />
