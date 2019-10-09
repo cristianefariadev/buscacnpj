@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { FaBuilding, FaSearch, FaSpinner } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Card from '../../components/Card';
-
+// import { validaCnpj } from '../../util/validaCnpj';
 import api from '../../services/api';
 import {
   Title,
@@ -63,11 +63,12 @@ export default class Main extends Component {
       status: response.data.status
     };
 
-    const { status } = response.data.status;
-
-    if (!status) {
-      console.log('erro');
+    if (response.data.status === 'ERRROR') {
+      console.log('api retornou status error');
+    } else {
+      console.log('api retornou status ok');
     }
+    console.log(response.data);
 
     this.setState({
       company: [...company, data],
@@ -88,8 +89,7 @@ export default class Main extends Component {
           </Title>
           <Form onSubmit={this.handleSubmit}>
             <input
-              type="text"
-              maxLength="14"
+              type="number"
               placeholder="CNPJ..."
               required
               value={newCnpj}
