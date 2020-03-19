@@ -15,7 +15,7 @@ export const Title = styled.form`
   }
 `;
 
-export const Form = styled.form`
+export const FormContainer = styled.form`
   margin-top: 50px;
   display: flex;
   flex-direction: row;
@@ -31,6 +31,7 @@ export const Form = styled.form`
     font-size: 16px;
   }
 `;
+
 export const MessageError = styled.form`
   position: absolute;
   left: 50%;
@@ -38,6 +39,7 @@ export const MessageError = styled.form`
   font-size: 10px;
   color: red;
 `;
+
 const rotate = keyframes`
   from {
     transform: rotate(0deg);
@@ -46,6 +48,7 @@ const rotate = keyframes`
     transform: rotate(360deg);
   }
 `;
+
 export const SubmitButton = styled.button.attrs(props => ({
   type: 'submit',
   disable: props.loading

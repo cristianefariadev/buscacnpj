@@ -3,12 +3,11 @@ import React, { Component } from 'react';
 import { FaBuilding, FaSearch, FaSpinner } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import Card from '../../components/Card';
-// import { validaCnpj } from '../../util/validaCnpj';
+import validaCnpj from '../../util/validaCnpj';
 import api from '../../services/api';
 import {
   Title,
-  Form,
-  MessageError,
+  FormContainer,
   SubmitButton,
   BgGradient,
   Container
@@ -44,37 +43,39 @@ export default class Main extends Component {
   handleSubmit = async e => {
     e.preventDefault();
 
-    this.setState({ loading: true });
-
     const { newCnpj, company } = this.state;
 
-    const response = await api.get(`/${newCnpj}`);
+    const cnpjValido = validaCnpj(newCnpj);
 
-    const data = {
-      nome: response.data.nome,
-      cnpj: response.data.cnpj,
-      logradouro: response.data.logradouro,
-      numero: response.data.numero,
-      complemento: response.data.complemento,
-      bairro: response.data.bairro,
-      cep: response.data.cep,
-      municipio: response.data.municipio,
-      uf: response.data.uf,
-      status: response.data.status
-    };
-
-    if (response.data.status === 'ERRROR') {
-      console.log('api retornou status error');
+    if (!cnpjValido) {
+      this.setState({ newCnpj: '' });
+      console.log('nao valido');
     } else {
-      console.log('api retornou status ok');
-    }
-    console.log(response.data);
+      console.log('valido');
 
-    this.setState({
-      company: [...company, data],
-      newCnpj: '',
-      loading: false
-    });
+      this.setState({ loading: true });
+
+      const response = await api.get(`/${newCnpj}`);
+
+      const data = {
+        nome: response.data.nome,
+        cnpj: response.data.cnpj,
+        logradouro: response.data.logradouro,
+        numero: response.data.numero,
+        complemento: response.data.complemento,
+        bairro: response.data.bairro,
+        cep: response.data.cep,
+        municipio: response.data.municipio,
+        uf: response.data.uf,
+        status: response.data.status
+      };
+
+      this.setState({
+        company: [...company, data],
+        newCnpj: '',
+        loading: false
+      });
+    }
   };
 
   render() {
@@ -82,12 +83,12 @@ export default class Main extends Component {
 
     return (
       <>
-        <header>
-          <Title>
-            <FaBuilding size={48} />
-            <h1>Localizador de Empresas</h1>
-          </Title>
-          <Form onSubmit={this.handleSubmit}>
+        <Title>
+          <FaBuilding size={48} />
+          <h1>Localizador de Empresas</h1>
+        </Title>
+        <FormContainer>
+          <form onSubmit={this.handleSubmit}>
             <input
               type="number"
               placeholder="CNPJ..."
@@ -95,7 +96,7 @@ export default class Main extends Component {
               value={newCnpj}
               onChange={this.handleInputChange}
             />
-            <MessageError>CNPJ Inválido!</MessageError>
+
             <SubmitButton loading={loading ? 1 : 0}>
               {loading ? (
                 <FaSpinner color="FFF" size={14} />
@@ -103,41 +104,40 @@ export default class Main extends Component {
                 <FaSearch color="FFF" size={14} />
               )}
             </SubmitButton>
-          </Form>
-        </header>
-        <section>
-          <BgGradient>
-            <Container>
-              {company.map(comp => (
-                <Card>
-                  <li key={comp.cnpj}>
-                    <div>
-                      <strong>CNPJ</strong>
-                      <p>{comp.cnpj}</p>
-                    </div>
-                    <div>
-                      <strong>Razão Social</strong>
-                      <p>{comp.nome}</p>
-                    </div>
-                    <div>
-                      <strong>Endereço</strong>
-                      <p>
-                        <span>{comp.logradouro},</span>
-                        <span> {comp.numero} -</span>
-                        <span> {comp.complemento} -</span>
-                        <span> {comp.bairro},</span>
-                        <span> {comp.municipio} -</span>
-                        <span> {comp.uf},</span>
-                        <span> {comp.cep}</span>
-                      </p>
-                      <Link to="/displaymap">Ver no mapa</Link>
-                    </div>
-                  </li>
-                </Card>
-              ))}
-            </Container>
-          </BgGradient>
-        </section>
+          </form>
+        </FormContainer>
+
+        <BgGradient>
+          <Container>
+            {company.map(comp => (
+              <Card>
+                <li key={comp.cnpj}>
+                  <div>
+                    <strong>CNPJ</strong>
+                    <p>{comp.cnpj}</p>
+                  </div>
+                  <div>
+                    <strong>Razão Social</strong>
+                    <p>{comp.nome}</p>
+                  </div>
+                  <div>
+                    <strong>Endereço</strong>
+                    <p>
+                      <span>{comp.logradouro},</span>
+                      <span> {comp.numero} -</span>
+                      <span> {comp.complemento} -</span>
+                      <span> {comp.bairro},</span>
+                      <span> {comp.municipio} -</span>
+                      <span> {comp.uf},</span>
+                      <span> {comp.cep}</span>
+                    </p>
+                    <Link to="/displaymap">Ver no mapa</Link>
+                  </div>
+                </li>
+              </Card>
+            ))}
+          </Container>
+        </BgGradient>
       </>
     );
   }
